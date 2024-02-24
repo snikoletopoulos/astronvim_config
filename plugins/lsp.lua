@@ -55,10 +55,10 @@ return {
 	},
 	{
 		"jose-elias-alvarez/null-ls.nvim",
-		opts = function(_, config)
+		opts = function(_, opts)
 			local null_ls = require("null-ls")
 
-			config.sources = {
+			opts.sources = {
 				-- Code Actions
 				null_ls.builtins.code_actions.cspell,
 				null_ls.builtins.code_actions.eslint_d,
@@ -95,7 +95,7 @@ return {
 				null_ls.builtins.formatting.shfmt,
 				null_ls.builtins.formatting.stylua,
 			}
-			return config
+			return opts
 		end,
 	},
 }
