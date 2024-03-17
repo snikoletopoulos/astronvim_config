@@ -14,13 +14,13 @@ return {
 			window = {
 				width = 40,
 				mappings = {
-					["<C-x"] = "open_split",
+					["<C-x>"] = "open_split",
 					["<C-v>"] = "open_vsplit",
 				},
 			},
 			tabs_layout = "focus",
 			sort_case_insensitive = true,
-			sources = { "filesystem", "buffers", "git_status" },
+			sources = { "filesystem" },
 			source_selector = {
 				show_scrolled_off_parent_node = true,
 				sources = {
@@ -128,14 +128,14 @@ return {
 				desc = "Add file to Harpoon",
 			},
 			{
-				"[h",
+				"<C-p>",
 				function()
 					require("harpoon.ui").nav_prev()
 				end,
 				desc = "Previous Harpoon file",
 			},
 			{
-				"]h",
+				"<C-n>",
 				function()
 					require("harpoon.ui").nav_next()
 				end,
@@ -187,6 +187,11 @@ return {
 	},
 	{
 		"SmiteshP/nvim-navbuddy",
+		dependencies = {
+			"SmiteshP/nvim-navic",
+			"MunifTanjim/nui.nvim",
+			"neovim/nvim-lspconfig",
+		},
 		keys = {
 			{
 				"<leader>fs",
@@ -195,11 +200,6 @@ return {
 				end,
 				desc = "Breadcrumb search",
 			},
-		},
-		dependencies = {
-			"SmiteshP/nvim-navic",
-			"MunifTanjim/nui.nvim",
-			"neovim/nvim-lspconfig",
 		},
 		opts = { lsp = { auto_attach = true } },
 	},

@@ -10,8 +10,7 @@ function EditingKeymaps:configure(maps)
 	maps:add("x", "<leader>y", { '"+y', desc = "Yank to clipboard" })
 	maps:add("x", "<leader>D", { '"_d', desc = "Cut" })
 	maps:add("n", "<leader>D", { '"_d', desc = "Cut" })
-
-	maps:add("n", "<leader>c", {
+	maps:add("n", "<leader>C", {
 		function()
 			local bufs = vim.fn.getbufinfo({ buflisted = true })
 			require("astronvim.utils.buffer").close(0)

@@ -4,10 +4,9 @@ return {
 
 	{ import = "astrocommunity.completion.copilot-lua" },
 
-	{ import = "astrocommunity.diagnostics.trouble-nvim" },
-
 	{ import = "astrocommunity.debugging.nvim-bqf" }, -- Quick fix list preview
 	{ import = "astrocommunity.debugging.nvim-dap-virtual-text" },
+	{ import = "astrocommunity.debugging.nvim-chainsaw" }, -- Logging
 
 	{ import = "astrocommunity.editing-support.auto-save-nvim" },
 	{ import = "astrocommunity.editing-support.chatgpt-nvim" },
