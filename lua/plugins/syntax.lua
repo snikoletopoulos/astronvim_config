@@ -164,11 +164,15 @@ return {
 			for module, methods in pairs(config) do
 				for method, textobjects in pairs(methods) do
 					for key, textobject in pairs(textobjects) do
+						local query = textobject.query
+						local textobject_module = module
+						local textobject_method = method
 						table.insert(keys, {
 							key,
 							function()
-								require("nvim-treesitter-textobjects" .. module)[method](
-									textobject.query("textobjects")
+								require("nvim-treesitter-textobjects." .. textobject_module)[textobject_method](
+									query,
+									"textobjects"
 								)
 							end,
 							desc = textobject.desc,
