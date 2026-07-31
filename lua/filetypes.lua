@@ -28,6 +28,7 @@ function Filetypes:setup()
 		},
 		filename = {
 			[".env"] = "dotenv",
+			["tmux.conf"] = "tmux",
 			["tsconfig.json"] = "jsonc",
 			[".eslintrc.json"] = "jsonc",
 			[".yamlfmt"] = "yaml",
