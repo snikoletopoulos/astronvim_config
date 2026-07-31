@@ -45,6 +45,15 @@ function Filetypes:setup()
 		},
 	})
 
+	vim.api.nvim_create_autocmd("FileType", {
+		desc = "Use built-in syntax highlighting",
+		group = vim.api.nvim_create_augroup("builtin-syntax", { clear = true }),
+		pattern = require("nikero.config").builtin_syntax_filetypes,
+		callback = function(args)
+			vim.api.nvim_exec_autocmds("Syntax", { pattern = args.match, modeline = false })
+		end,
+	})
+
 	local group = vim.api.nvim_create_augroup("close-with-q", { clear = true })
 	vim.api.nvim_create_autocmd("FileType", {
 		desc = "Close with <q>",
