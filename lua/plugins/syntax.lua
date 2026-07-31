@@ -65,8 +65,6 @@ return {
 				"svelte",
 				"vue",
 
-				"tmux",
-
 				"xml",
 				"yaml",
 
