@@ -166,9 +166,6 @@ return {
 				"sqlfluff",
 				{ "sqls", version = "v0.2.27" },
 
-				-- Swift
-				"codelldb",
-
 				"tailwindcss-language-server",
 				"taplo",
 
