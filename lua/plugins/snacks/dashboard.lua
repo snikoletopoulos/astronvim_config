@@ -34,7 +34,7 @@ return {
 						desc = "Lazygit",
 						action = function() Snacks.lazygit() end,
 					},
-					{ icon = " ", key = "p", desc = "Select project", action = vim.cmd.ProjectMgr },
+					{ icon = " ", key = "p", desc = "Select project", action = ":Project snacks" },
 					{
 						icon = " ",
 						key = "s",

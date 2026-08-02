@@ -6,6 +6,15 @@
 ---@field groups CommandGroup[]
 ---@field select_command fun(self: CommandPalette, commands: Command[], on_back?: fun())
 ---@field show fun(self: CommandPalette)
+
+---@param server_name string
+local function restart_lsp(server_name)
+	for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0, name = server_name })) do
+		client:stop(true)
+	end
+	vim.defer_fn(function() vim.lsp.enable(server_name) end, 100)
+end
+
 local CommandPalette = {
 	snacks_opts = {
 		layout = { preset = "vscode" },
@@ -15,17 +24,16 @@ local CommandPalette = {
 		{
 			name = "LSP",
 			commands = {
-				{ "Restart tsserver", ":VtsExec restart_tsserver" },
-				{ "Restart eslint_d", ":! eslint_d restart" },
+				{ "Restart tsgo", function() restart_lsp("tsgo") end },
+				{ "Restart eslint_d", ":!eslint_d restart" },
 				{ "Restart prettierd", ":!prettierd restart" },
-				{ "Restart lua-ls", ":LspRestart lua-ls" },
+				{ "Restart lua-ls", function() restart_lsp("lua_ls") end },
 			},
 		},
 		{
 			name = "File",
 			commands = {
-				{ "Inspect types", ":InspectTwoslashQueries" },
-				{ "Toggle inline folds", ":InlineFoldToggle" },
+				{ "Inspect types", ":TwoSlashQueriesInspect" },
 				{ "Search and Replace", ":SearchAndReplace" },
 				{ "Toggle env variables", "CloakToggle" },
 			},
