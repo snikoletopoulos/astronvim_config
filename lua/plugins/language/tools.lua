@@ -151,41 +151,48 @@ return {
 		opts = function(_, opts)
 			opts = opts or {}
 
-			opts.formatters_by_ft = vim.tbl_extend("force", opts.formatters_by_ft or {}, {
-				astro = { "eslint_d", "prettierd" },
-				bash = { "shfmt", "shellcheck" },
-				sh = { "shfmt", "shellcheck" },
-				zsh = { "shfmt", "shellcheck" },
-				c = { "clang_format" },
-				cpp = { "clang_format" },
-				cs = { "csharpier" },
-				go = { "goimports", "golines", lsp_format = "last" },
-				groovy = { "npm-groovy-lint" },
-				lua = { "stylua" },
-				markdown = { "markdownlint" },
-				nginx = { "nginxfmt" },
-				python = { "isort", "black" },
-				rust = { "dioxus", lsp_format = "first" },
-				sql = { "sqlfluff", lsp_format = "never" },
-				templ = { "templ" },
-			})
-
-			for _, language in
-				ipairs(vim.list_extend(vim.deepcopy(require("filetypes").javascript), {
-					"json",
-					"jsonc",
-					"css",
-					"scss",
-					"html",
-					"graphql",
-					"markdown",
-					"markdown.mdx",
-					"yaml",
-				}))
-			do
-				opts.formatters_by_ft[language] =
-					{ "eslint_d", "prettierd", "oxlint", lsp_format = "first" }
+			---@param linters string[]
+			local function with_js_formatters(linters)
+				return vim.list_extend(linters, {
+					"eslint_d",
+					"prettierd",
+					"oxlint",
+					lsp_format = "first",
+				})
 			end
+
+			opts.formatters_by_ft = vim.tbl_extend(
+				"force",
+				opts.formatters_by_ft or {},
+				{
+					astro = { "eslint_d", "prettierd" },
+					bash = { "shfmt", "shellcheck" },
+					sh = { "shfmt", "shellcheck" },
+					zsh = { "shfmt", "shellcheck" },
+					c = { "clang_format" },
+					cpp = { "clang_format" },
+					cs = { "csharpier" },
+					go = { "goimports", "golines", lsp_format = "last" },
+					groovy = { "npm-groovy-lint" },
+					lua = { "stylua" },
+					markdown = with_js_formatters({ "markdownlint" }),
+					nginx = { "nginxfmt" },
+					python = { "isort", "black" },
+					rust = { "dioxus", lsp_format = "first" },
+					sql = { "sqlfluff", lsp_format = "never" },
+					templ = { "templ" },
+					json = with_js_formatters({}),
+					jsonc = with_js_formatters({}),
+					css = with_js_formatters({}),
+					scss = with_js_formatters({}),
+					html = with_js_formatters({}),
+					graphql = with_js_formatters({}),
+					yaml = with_js_formatters({}),
+				},
+				vim
+					.iter(vim.deepcopy(require("filetypes").javascript))
+					:map(function() return with_js_formatters({}) end)
+			)
 
 			opts.formatters = {
 				sqlfluff = {
