@@ -82,11 +82,24 @@ function Autocmds:setup()
 				end
 			)
 
-			local foldexpr = functionality.folding and "v:lua.vim.lsp.foldexpr()"
-				or "v:lua.vim.treesitter.foldexpr()"
+			local foldexpr = vim.b[args.buf].foldexpr or "v:lua.vim.treesitter.foldexpr()"
+			if args.event == "LspAttach" then
+				foldexpr = functionality.folding and "v:lua.vim.lsp.foldexpr()"
+					or "v:lua.vim.treesitter.foldexpr()"
+				vim.b[args.buf].foldexpr = foldexpr
+			end
+
+			local windows = args.event == "LspAttach" and vim.fn.win_findbuf(args.buf)
+				or { vim.api.nvim_get_current_win() }
 			vim
-				.iter(vim.fn.win_findbuf(args.buf))
-				:filter(function(winid) return vim.wo[winid].foldexpr ~= foldexpr end)
+				.iter(windows)
+				:filter(
+					function(winid)
+						return vim.api.nvim_win_is_valid(winid)
+							and vim.api.nvim_win_get_buf(winid) == args.buf
+							and vim.wo[winid].foldexpr ~= foldexpr
+					end
+				)
 				:each(function(winid)
 					vim.wo[winid].foldexpr = foldexpr
 					vim.api.nvim_win_call(winid, function() vim.cmd("normal! zx") end)
