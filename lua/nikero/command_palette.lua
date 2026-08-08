@@ -33,7 +33,8 @@ local CommandPalette = {
 		{
 			name = "File",
 			commands = {
-				{ "Inspect types", ":TwoSlashQueriesInspect" },
+				{ "Inspect types", ":InspectTwoslashQueries" },
+				{ "Toggle inline folds", ":InlineFoldToggle" },
 				{ "Search and Replace", ":SearchAndReplace" },
 				{ "Toggle env variables", "CloakToggle" },
 			},
