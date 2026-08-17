@@ -315,6 +315,9 @@ return {
 			backend_opts = {
 				delta = { header_lines_to_remove = 4 },
 			},
+			format_title = function(action, client)
+				return string.format("[%s] %s", client.name, action.title)
+			end,
 		},
 		config = function(_, opts)
 			require("tiny-code-action").setup(opts)
