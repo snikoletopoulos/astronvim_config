@@ -171,7 +171,7 @@ return {
 
 				-- Typescript
 				"js-debug-adapter",
-				"tsgo",
+				"tsc",
 				"eslint_d",
 				"prettierd",
 				"oxfmt",

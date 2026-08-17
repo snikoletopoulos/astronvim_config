@@ -35,7 +35,7 @@ return {
 		opts = { multi_line = true },
 		config = function(_, opts)
 			require("twoslash-queries").setup(opts)
-			vim.lsp.config("tsgo", {
+			vim.lsp.config("tsc", {
 				on_attach = function(client, buffer) require("twoslash-queries").attach(client, buffer) end,
 			})
 		end,
@@ -60,7 +60,7 @@ return {
 			}
 			local default_diagnostic_handler = vim.lsp.handlers["textDocument/diagnostic"]
 
-			vim.lsp.config("tsgo", {
+			vim.lsp.config("tsc", {
 				handlers = {
 					["textDocument/diagnostic"] = function(error, result, ctx)
 						if not result or result.kind ~= "full" then
