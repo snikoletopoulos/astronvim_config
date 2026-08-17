@@ -104,27 +104,67 @@ return {
 			lint.linters.dotenv_linter.env =
 				{ DOTENV_LINTER_IGNORE_CHECKS = table.concat({ "QuoteCharacter", "UnorderedKey" }, ",") }
 
-			vim.api.nvim_create_autocmd(
-				{ "BufWritePost", "BufReadPost", "InsertLeave", "TextChanged", "BufEnter" },
-				{
-					group = vim.api.nvim_create_augroup("lint", { clear = true }),
-					callback = function()
-						if vim.bo.modifiable then
-							local ok, msg = pcall(lint.try_lint, nil, {
-								filter = function(linter)
-									if linter.name == "eslint_d" then
-										return vim.tbl_contains(tools:get_js_tools(0).linter, "eslint")
-									end
-									return true
-								end,
-							})
-							if not ok then
-								vim.notify(msg or "Error while linting", vim.log.levels.ERROR, { title = "Lint" })
-							end
-						end
-					end,
-				}
-			)
+			local Timer = require("nikero.timer")
+			---@type table<integer, Timer>
+			local timers = {}
+			local group = vim.api.nvim_create_augroup("lint", { clear = true })
+
+			local function lint_buffer(bufnr)
+				if not vim.api.nvim_buf_is_valid(bufnr) or not vim.bo[bufnr].modifiable then return end
+
+				vim.api.nvim_buf_call(bufnr, function()
+					local ok, msg = pcall(lint.try_lint, nil, {
+						filter = function(linter)
+							return linter.name ~= "eslint_d"
+								or vim.tbl_contains(tools:get_js_tools(bufnr).linter, "eslint")
+						end,
+					})
+					if not ok then
+						vim.notify(msg or "Error while linting", vim.log.levels.ERROR, { title = "Lint" })
+					end
+				end)
+			end
+
+			vim.api.nvim_create_autocmd("BufWritePost", {
+				group = group,
+				callback = function(args)
+					local timer = timers[args.buf]
+					if timer then timer:stop() end
+					lint_buffer(args.buf)
+				end,
+			})
+
+			vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+				group = group,
+				callback = function(args)
+					vim.schedule(function() lint_buffer(args.buf) end)
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("InsertLeave", {
+				group = group,
+				callback = function(args)
+					local timer = timers[args.buf]
+					if not timer then
+						timer = Timer.new(function() lint_buffer(args.buf) end)
+						timers[args.buf] = timer
+					end
+					timer:start(300)
+				end,
+			})
+
+			vim.api.nvim_create_autocmd("BufWipeout", {
+				group = group,
+				callback = function(args)
+					local timer = timers[args.buf]
+					if not timer then return end
+					timer:close()
+					timers[args.buf] = nil
+				end,
+			})
+
+			-- User File is emitted during BufReadPost/BufNewFile, before this plugin loads.
+			vim.schedule(function() lint_buffer(vim.api.nvim_get_current_buf()) end)
 		end,
 	},
 	{
@@ -156,7 +196,7 @@ return {
 				return vim.list_extend(linters, {
 					"eslint_d",
 					"prettierd",
-					"oxlint",
+					-- "oxlint",
 					lsp_format = "first",
 				})
 			end
@@ -263,22 +303,10 @@ return {
 				local format_opts = {
 					bufnr = buffer,
 					range = range,
-					filter = function(client) return client.name ~= "tsgo" end,
+					filter = function(client) return client.name ~= "tsc" and client.name ~= "ts_ls" end,
 				}
 
-				if not vim.bo[buffer].modified then
-					require("conform").format(vim.tbl_extend("force", format_opts, { async = true }))
-					return
-				end
-
-				vim.api.nvim_create_autocmd("BufWritePre", {
-					group = vim.api.nvim_create_augroup("conform-" .. buffer, { clear = true }),
-					buffer = buffer,
-					callback = function()
-						require("conform").format(vim.tbl_extend("force", format_opts, { async = false }))
-					end,
-					once = true,
-				})
+				require("conform").format(vim.tbl_extend("force", format_opts, { async = true }))
 			end, { range = true, desc = "Format" })
 		end,
 	},
