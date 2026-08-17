@@ -316,5 +316,12 @@ return {
 				delta = { header_lines_to_remove = 4 },
 			},
 		},
+		config = function(_, opts)
+			require("tiny-code-action").setup(opts)
+
+			local terminal = require("tiny-code-action.terminal")
+			---@diagnostic disable-next-line: duplicate-set-field
+			terminal.colorize = function() end
+		end,
 	},
 }
