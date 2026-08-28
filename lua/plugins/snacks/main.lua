@@ -56,6 +56,14 @@ return {
 		indent = {
 			indent = { enabled = false },
 			scope = { char = "▏" },
+			chunk = {
+				enabled = true,
+				char = {
+					corner_top = "╭",
+					corner_bottom = "╰",
+					arrow = "─",
+				},
+			},
 			animate = { enabled = false },
 		},
 		input = { enabled = true },
