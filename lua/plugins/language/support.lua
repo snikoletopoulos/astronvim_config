@@ -189,6 +189,5 @@ return {
 				"tree-sitter-cli",
 			},
 		},
-		init = function() vim.schedule(require("mason-tool-installer").run_on_start) end,
 	},
 }
