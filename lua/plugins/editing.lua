@@ -10,7 +10,13 @@ return {
 	{
 		"nguyenvukhang/nvim-toggler",
 		keys = { { "<leader>i", desc = "Toggle word", mode = { "n", "v" } } },
-		opts = {},
+		opts = {
+			inverses = {
+				const = "let",
+				null = "undefined",
+				some = "none",
+			},
+		},
 	},
 	{ "folke/ts-comments.nvim", event = "VeryLazy", opts = {} },
 	{
