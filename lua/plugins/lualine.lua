@@ -57,6 +57,7 @@ return {
 							"Filetype",
 							"ModeChanged",
 							"DiagnosticChanged",
+							"OptionSet",
 						},
 					},
 					always_divide_middle = true,
@@ -104,6 +105,11 @@ return {
 							end,
 							cond = function() return #require("lint").get_running() ~= 0 end,
 							color = { fg = colors.peach },
+						},
+						{
+							function() return "WRAP" end,
+							cond = function() return vim.wo.wrap end,
+							color = { fg = colors.blue },
 						},
 						{
 							"diff",
