@@ -87,10 +87,8 @@ function Autocmds:setup()
 			if functionality.inlay_hints then vim.lsp.inlay_hint.enable(true, { bufnr = args.buf }) end
 
 			if functionality.code_lens then
-				local should_enable = not vim.tbl_contains(
-					require("nikero.config").hide_code_lens_ft,
-					vim.bo[args.buf].filetype
-				)
+				local should_enable =
+					vim.tbl_contains(require("nikero.config").show_code_lens_ft, vim.bo[args.buf].filetype)
 				vim.lsp.codelens.enable(should_enable, { bufnr = args.buf })
 			end
 

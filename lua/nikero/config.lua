@@ -6,7 +6,7 @@
 local Config = {
 	transparency = false,
 	builtin_syntax_filetypes = { "tmux" },
-	hide_code_lens_ft = { "lua", "rust", "cs" },
+	show_code_lens_ft = { "go" },
 }
 
 function Config:get_sql_connections()
