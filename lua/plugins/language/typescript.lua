@@ -41,6 +41,30 @@ return {
 		end,
 	},
 	{
+		"youyoumu/pretty-ts-errors.nvim",
+		lazy = false,
+		build = "npm install -g pretty-ts-errors-markdown",
+		keys = {
+
+			{
+				"gL",
+				function() require("pretty-ts-errors").show_formatted_error() end,
+				desc = "Show TS error",
+				ft = require("filetypes").javascript,
+			},
+		},
+		opts = {
+			float_opts = {
+				wrap = false,
+				max_width = 320,
+				max_height = 120,
+			},
+			auto_open = false,
+			lazy_window = true,
+		},
+	},
+	{
+		enabled = false,
 		"OlegGulevskyy/better-ts-errors.nvim",
 		dependencies = { "MunifTanjim/nui.nvim" },
 		ft = require("filetypes").javascript,
