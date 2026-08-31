@@ -35,14 +35,7 @@ keymaps:add_multiple({
 	{
 		"n",
 		"<leader>uw",
-		function()
-			vim.wo.wrap = not vim.wo.wrap
-			vim.notify(
-				"wrap " .. (vim.wo.wrap and "enabled" or "disabled"),
-				vim.log.levels.INFO,
-				{ title = "Line Wrap" }
-			)
-		end,
+		function() vim.wo.wrap = not vim.wo.wrap end,
 		{ desc = "Toggle line wrap" },
 	},
 })
