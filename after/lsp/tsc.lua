@@ -1,6 +1,8 @@
 ---@type lsp.ts_ls
 local settings = {
 	updateImportsOnFileMove = { enabled = "always" },
+	referencesCodeLens = { enabled = false },
+	implementationsCodeLens = { enabled = false },
 	inlayHints = {
 		enumMemberValues = { enabled = true },
 		functionLikeReturnTypes = { enabled = true },
