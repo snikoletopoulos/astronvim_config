@@ -1,6 +1,7 @@
 ---@type vim.lsp.Config | { settings?: lsp.oxlint }
 return {
 	workspace_required = false,
+	settings = { run = "onSave" },
 	root_dir = function(buffer, on_dir)
 		local filename = vim.api.nvim_buf_get_name(buffer)
 		local start_path = filename ~= "" and vim.fs.dirname(filename) or vim.uv.cwd()
